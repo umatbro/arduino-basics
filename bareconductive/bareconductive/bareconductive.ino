@@ -1,9 +1,9 @@
 /*
   This code will allow to toggle on/off pin just by touching conductive sensor (e.g. foil)
 */
-#include <CapacitiveSensor.h>
+#include "BareConductive.h"
 
-CapacitiveSensor sensor = CapacitiveSensor(4,2);        // 10M resistor between pins 4 & 2, pin 2 is sensor pin - it's connected with a piece of foil
+BareSensor sensor = BareSensor(4,2);        // 10M resistor between pins 4 & 2, pin 2 is sensor pin - it's connected with a piece of foil
 int pin = 7;
 long sensor_thershold = 5000;
 
