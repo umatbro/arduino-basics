@@ -5,7 +5,7 @@
 
 BareSensor sensor = BareSensor(4,2);        // 10M resistor between pins 4 & 2, pin 2 is sensor pin - it's connected with a piece of foil
 int pin = 7;
-long sensor_thershold = 5000;
+long sensor_threshold = 5000;
 
 void setup()
 {
@@ -28,7 +28,7 @@ void loop()
 
     Serial.println(total1);                  // print sensor output
 
-    if(curr_val > sensor_thershold && prev_val < sensor_thershold){
+    if(curr_val > sensor_threshold && prev_val < sensor_threshold){
       on_off_flag = !on_off_flag;
     }
 
