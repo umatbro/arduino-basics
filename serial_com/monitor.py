@@ -1,18 +1,32 @@
 #!/usr/bin/env python3
 
-import platform
+import serial
 from serial.tools import list_ports
+import sys
+from utils.connect import find_arduino
 
-import Device
-from op_sys import OS
-
-system = OS.get_system(platform.system())
+BAUD_RATE = 9600
 
 ports = list_ports.comports()
 
-devices = []
+# search for Arduino in available ports
+device = find_arduino()
 
-for port in ports:
-    device = Device.Device(port)
-    device.print_info()
-    devices.append(device)
+if not device:
+    sys.exit()
+
+# start listening on port
+arduino = serial.Serial(
+    port=device.device,
+    baudrate=BAUD_RATE,
+)
+
+while True:
+    try:
+        line = arduino.readline()
+        if line:
+            print(line.decode('UTF-8').strip())
+
+    except KeyboardInterrupt:
+        print('Stopped listening. Exitting program')
+        sys.exit()
