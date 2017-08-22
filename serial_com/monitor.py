@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 
 import serial
-from serial.tools import list_ports
 import sys
+import os
+
+from utils.logger import Logger
 from utils.connect import find_arduino
 
 BAUD_RATE = 9600
-
-ports = list_ports.comports()
+BASE_DIR = os.path.join(os.path.dirname(__file__))
 
 # search for Arduino in available ports
 device = find_arduino()
@@ -21,12 +22,14 @@ arduino = serial.Serial(
     baudrate=BAUD_RATE,
 )
 
+logger = Logger(os.path.join(BASE_DIR, '22.08'))
+
 while True:
     try:
         line = arduino.readline()
         if line:
-            print(line.decode('UTF-8').strip())
+            logger.log(line.decode('UTF-8').strip())
 
     except KeyboardInterrupt:
-        print('Stopped listening. Exitting program')
+        print('Keyboard interrupt. Exiting program')
         sys.exit()

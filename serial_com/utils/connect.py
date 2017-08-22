@@ -1,15 +1,13 @@
 from serial.tools import list_ports
-import Device
 
-import sys
+from utils.logger import Logger
+import Device
 
 
 def find_arduino():
     """Find Arduino in available COM ports
     :return first port object connected to arduino board"""
     ports = list_ports.comports()
-
-    device = None
 
     # search for Arduino in available ports
     while ports:
@@ -21,5 +19,5 @@ def find_arduino():
             return device
 
     # if Arduino not found - return nothing
-    print('Arduino not found')
+    print('\nArduino not found')
     return None
