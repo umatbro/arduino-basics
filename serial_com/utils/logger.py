@@ -20,7 +20,6 @@ class Logger:
 
         print('> {}'.format(message))
 
-
     @staticmethod
     def message_with_timestamp(message):
         """:return given message with timestamp formatted like this:

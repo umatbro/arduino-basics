@@ -7,4 +7,3 @@ pySerial can be installed from PyPI:
 ```bash
 $ python -m pip install pyserial
 ```
-
