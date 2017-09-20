@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/usr/bin/env python
 
 import serial
 import sys
@@ -15,6 +15,8 @@ device = find_arduino()
 
 if not device:
     sys.exit()
+
+print('Device found: {}'.format(str(device)))
 
 # start listening on port
 arduino = serial.Serial(
