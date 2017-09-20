@@ -1,15 +1,18 @@
 // plays Panie Janie
+namespace Notes
+{
+  int   g = 195;
+  int  c1 = 261;
+  int  d1 = 293;
+  int  e1 = 329;
+  int  f1 = 349;
+  int  g1 = 392;
+  int  a1 = 440;
+  int  h1 = 493;
+  int  c2 = 523;
+}
 
-int   g = 195;
-int  c1 = 261;
-int  d1 = 293;
-int  e1 = 329;
-int  f1 = 349;
-int  g1 = 392;
-int  a1 = 440;
-int  h1 = 493;
-int  c2 = 523;
-
+using namespace Notes;
 
 void play_sound(int pin, int sound, float len=1, int tempo=500){
   float note_time = len * tempo;
@@ -22,7 +25,6 @@ void play_sequence(int pin, int* notes, float* note_lens, int notes_size){
     play_sound(pin, notes[i], note_lens[i]);
   }
 }
-
  
 void setup() {
   int notes[] = {
