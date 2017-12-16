@@ -1,23 +1,20 @@
 #include "music.h"
 
+using namespace Music;
 namespace melodies{
-  using namespace Notes;
+	using namespace Freq;
   Note NOTES[] = {
-    Note(g3, 1), Note(c4, 2), Note(d4,1), Note(e4,1)
+    Note(g3, Duration(QUATER)), Note(c4, Duration(QUATER))
   };
 }
 
 void setup() {
-  Serial.begin(9600);
-  Note note = Note(Notes::g3, 1);
-  Serial.print("Height: ");
-  Serial.println(note.height);
-  Serial.print("Duration: ");
-  Serial.println(note.duration);
-  Serial.println(melodies::NOTES[0].height);
+	Serial.begin(9600);
+	pinMode(A5, OUTPUT);
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-
+	melodies::NOTES[0].play(A5);
+	melodies::NOTES[1].play(A5);
+	while(true){}
 }
