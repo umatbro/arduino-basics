@@ -1,33 +1,66 @@
-#include <Arduino.h>
 #include "music.h"
-
 using namespace Music;
-Note::Note(int freq, int duration)
+
+Melody::Melody(int* frequencies, int* durations, int notes_len, int tempo_):
+pin(0),
+freqs(frequencies),
+durations(durations),
+lens(notes_len),
+tempo(tempo_)
 {
-	this -> freq = freq;
-	this -> duration = duration;
+	// this->pin = 0;
+	// this->freqs = frequencies;
+	// this->durations = durations;
+	// this->lens = notes_len;
+	// this->tempo = tempo;
 }
 
-void Note::play(const int& pin, const int& tempo){
-	float tempof = (float) tempo;
-	float durationf = (float) this -> duration;
-	float dur = 60.0 / (durationf * tempof);
-	// time in ms
-	long play_time = (long) 4000 * dur; // 4k instead 1k because we take QUATER of a unit of tempo
-	tone(pin, this -> freq);
-	this -> print_values(tempo, play_time);
-	delay(play_time);
-	noTone(pin);
+Melody::Melody()
+{
+	Melody(NULL, NULL, 0, 100);
 }
 
+void Melody::set_tempo(const int tempo)
+{
+	this->tempo = tempo;
+}
 
-void Note::print_values(const int& tempo, const int& play_time){
+void Melody::setPin(int pin)
+{
+	this-> pin = pin;
+}
+
+void Melody::play()
+{
+	float tempof = (float) this->tempo;
+	for (int i = 0; i < this->lens; i++)
+	{
+		float durationf = (float) this->durations[i];
+		float dur = 60.0 / (durationf * tempof);
+		// time in ms
+		long play_time = (long) 4000 * dur;
+		play_note(this->pin, this->freqs[i], play_time);
+	}
+}
+
+void play_note(int pin, int freq, long duration, int separation)
+{
+	/**
+	* @param pin: pin on which buzzer is connected
+	* @param freq: frequencies
+	* @param duration: duration in ms
+	* @param separation: notes will be separated with given amount of time.
+	*/
 	Serial.print("freq: ");
-	Serial.print(this -> freq);
-	Serial.print(" tempo: ");
-	Serial.print(tempo);
+	Serial.print(freq);
 	Serial.print(" duration: ");
-	Serial.print(this -> duration);
-	Serial.print(" play_time: ");
-	Serial.println(play_time);
+	Serial.println(duration);
+	if (freq){
+		tone(pin, freq);
+		delay(duration-separation);
+		noTone(pin);
+		delay(separation);
+	} else {
+		delay(duration);
+	}
 }

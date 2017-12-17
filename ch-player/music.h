@@ -1,11 +1,15 @@
+#pragma once
 #ifndef _MUSIC_H
 #define _MUSIC_H
 
+#include <Arduino.h>
 namespace Music
 {
-	namespace Freq {
+	namespace Freq 
+	{
 		const int  PAUSE = 0;
 		const int  g3 = 196;
+		const int  h3 = 246;
 		const int  c4 = 261;
 		const int  d4 = 293;
 		const int  e4 = 329;
@@ -22,7 +26,8 @@ namespace Music
 		const int ais4 = 466, b4 = 466;
 	}
 	
-	namespace Tempo{
+	namespace Tempo
+	{
 		const int LARGO		= 40;
 		const int LENTO		= 60;
 		const int ADAGIO	= 70;
@@ -32,40 +37,26 @@ namespace Music
 		const int PRESTO 	= 180;
 		const int PRESTISSIMO = 200;
 	}
-	// notes lengths
-	enum Duration {
-		WHOLE = 1,
-		HALF = 2,
-		QUATER = 4,
-		EIGTH = 8,
-		SIXTEENTH = 16
-	};
-
-
-	class Note
-	{
-	private:
-		float calc_duration(Duration& duration, int tempo);
-		void print_values(const int& tempo, const int& play_time);
-		
-	public:
-		int freq;
-		int duration;
-		
-		Note(int height, int duration);
-		void play(const int& pin, const int& tempo=Tempo::MODERATO);
-		//void play(Duration& duration);
-	};
-
+	
 	class Melody
 	{
 	private:
-		int notes_length;
+		int pin;
+		int* freqs;
+		int* durations;
+		int lens;
+		int tempo;
 	public:
-		Melody(int pin, Note* notes, int notes_len, int tempo=60);
+		Melody();
+		Melody(int* frequencies, int* durations, int notes_len, const int tempo=Tempo::MODERATO);
+		void set_tempo(const int tempo);
+		void setPin(int pin);
+		void play();
+		//void play(const int tempo=Tempo::MODERATO);
 	};
-
-	static Melody melody_out_of_notes(int pin, int* notes, int* notes_durations, int* notes_len, int tempo=60);
-	static Melody melody_out_of_notes(int pin, Note* notes, int notes_len, int tempo=60);
+	
 }
+
+void play_note(int pin, int freq, long duration, int separation=50);
+
 #endif

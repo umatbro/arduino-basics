@@ -1,20 +1,18 @@
 #include "music.h"
+#include "music_lib.h"
 
-using namespace Music;
-namespace melodies{
-	using namespace Freq;
-  Note NOTES[] = {
-    Note(g3, Duration(QUATER)), Note(c4, Duration(QUATER))
-  };
-}
+using Music::Melody;
+Melody betlejem;
 
 void setup() {
 	Serial.begin(9600);
-	pinMode(A5, OUTPUT);
+	//play_note(A5, 300, 1000);
+	betlejem = MusicLib::PRZYBIEZELI_DO_BETLEJEM;
+	betlejem.set_tempo(200);
+	betlejem.setPin(A5);
+	betlejem.play();
 }
 
 void loop() {
-	melodies::NOTES[0].play(A5);
-	melodies::NOTES[1].play(A5);
 	while(true){}
 }
