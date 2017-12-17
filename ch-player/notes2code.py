@@ -35,8 +35,9 @@ namespace {name}{{
 '''.format(name=dct['song_name'], freqs=', '.join(dct['nuty']), lens=', '.join([str(w) for w in dct['wagi']]), len=len(dct['nuty']))
     return result
 
-print(convert_dict_to_string({
-    'song_name': 'Dupa',
-    'nuty': ['c1', 'd2', 'd4'],
-    'wagi': [2, 4, 8]
-}))
+if __name__ == '__main__':
+	print(convert_dict_to_string({
+		'song_name': 'example',
+		'nuty': ['c1', 'd2', 'd4'],
+		'wagi': [2, 4, 8]
+	}))

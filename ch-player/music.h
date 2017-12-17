@@ -8,22 +8,25 @@ namespace Music
 	namespace Freq 
 	{
 		const int  PAUSE = 0;
-		const int  g3 = 196;
-		const int  h3 = 246;
-		const int  c4 = 261;
-		const int  d4 = 293;
-		const int  e4 = 329;
-		const int  f4 = 349;
-		const int  g4 = 392;
-		const int  a4 = 440;
-		const int  h4 = 493;
-		const int  c5 = 523;
-
-		const int cis4 = 277, des4 = 277;
-		const int dis4 = 311, es4 = 311;
-		const int fis4 = 370, ges4 = 370;
-		const int gis4 = 415, as4 = 415;
-		const int ais4 = 466, b4 = 466;
+		// oktawa mała
+		const int  g0 = 196;
+		const int  h0 = 246;
+		// oktawa razkreślna
+		const int  c1 = 261;
+		const int  d1 = 293;
+		const int  e1 = 329;
+		const int  f1 = 349;
+		const int  g1 = 392;
+		const int  a1 = 440;
+		const int  h1 = 493;
+		
+		const int cis1 = 277, des1 = 277;
+		const int dis1 = 311, es1 = 311;
+		const int fis1 = 370, ges1 = 370;
+		const int gis1 = 415, as1 = 415;
+		const int ais1 = 466, b1 = 466;
+		// oktawa dwukreślna
+		const int  c2 = 523;
 	}
 	
 	namespace Tempo

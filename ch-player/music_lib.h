@@ -10,7 +10,7 @@ namespace MusicLib
 {
 	using namespace Music::Freq;
 
-	Music::Melody melody_out_of_notes(int* freqs, int* lens, int notes_len)
+	Music::Melody melody_out_of_notes(int* freqs, int* lens, int notes_len, int tempo=110)
 	{
 		// Note* notes = new Note[notes_len];
 		Serial.println("====================");
@@ -23,18 +23,18 @@ namespace MusicLib
 		}
 		Serial.println("====================");
 		
-		return Music::Melody(freqs, lens, notes_len);
+		return Music::Melody(freqs, lens, notes_len, tempo);
 	}
 	
 	namespace Betlejem
 	{
 		int freqs[] = {
-			c4, h3, c4, d4, e4, d4, e4, f4, g4, a4, g4,
-			c4, h3, c4, d4, e4, d4, e4, f4, g4, a4, g4, //22
-			c5, g4, g4, a4, g4, f4, e4, f4, PAUSE, f4, a4, g4, f4, e4, d4,
-			e4, f4, g4, e4, d4, c4, //21
-			c5, g4, g4, a4, g4, f4, e4, f4, PAUSE, f4, a4, g4, f4, e4, d4,
-			e4, f4, g4, e4, d4, c4
+			c1, h0, c1, d1, e1, d1, e1, f1, g1, a1, g1,
+			c1, h0, c1, d1, e1, d1, e1, f1, g1, a1, g1, //22
+			c2, g1, g1, a1, g1, f1, e1, f1, PAUSE, f1, a1, g1, f1, e1, d1,
+			e1, f1, g1, e1, d1, c1, //21
+			c2, g1, g1, a1, g1, f1, e1, f1, PAUSE, f1, a1, g1, f1, e1, d1,
+			e1, f1, g1, e1, d1, c1
 		};
 		int lens[] = {
 			en, en, en, en, en, en, en, en, qn, qn, hn,
@@ -48,7 +48,7 @@ namespace MusicLib
 	}
 	namespace Simple
 	{
-		int freqs[] = {c4, d4, PAUSE, e4};
+		int freqs[] = {c1, d1, PAUSE, e1};
 		int lens[] = {hn, en, en, hn};
 		const int len = 4;
 	}
