@@ -12,5 +12,6 @@ void setup() {
 }
 
 void loop() {
-  fill_pink_and_white(line);
+//  fill_pink_and_white(line);
+  switch_pink_white(line);
 }
