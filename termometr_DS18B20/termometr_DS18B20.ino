@@ -1,7 +1,7 @@
 #include <OneWire.h>
 #include <DallasTemperature.h>
 
-#define TERMO_PIN 9
+#define TERMO_PIN A5
 
 // remember to put 4.7k resistor between data pin and VCC
 
@@ -16,7 +16,7 @@ void setup(void) {
 void loop() {
   sensors.requestTemperatures();
 
-  Serial.print("Current temperature: ");
+//  Serial.print("Current temperature: ");
   Serial.println(sensors.getTempCByIndex(0));
-  delay(500);
+  delay(10000);
 }
