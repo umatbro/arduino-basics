@@ -1,10 +1,15 @@
 #include <Adafruit_NeoPixel.h>
+#include <SoftwareSerial.h>
 #ifdef __AVR__
   #include <avr/power.h>
 #endif
 
 #define PIN 9
 #define NUM_LEDS 37
+#define BT_TX_PIN 2
+#define BT_RX_PIN 3
+
+SoftwareSerial btSerial(BT_RX_PIN, BT_TX_PIN);
 
 // Parameter 1 = number of pixels in strip
 // Parameter 2 = Arduino pin number (most are valid)
@@ -24,7 +29,10 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRB + NEO_KHZ800)
 void setup() {
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
+  btSerial.begin(9600);
 }
+
+char mode = '1';
 
 void loop() {
   // Some example procedures showing how to display to the pixels:
@@ -33,11 +41,39 @@ void loop() {
   // colorWipe(strip.Color(0, 0, 255), 50); // Blue
 
   // rainbow(20);
-  rainbowCycle(30);
+  if (btSerial.available() > 0) {
+    char reading = btSerial.read();
+    if (reading != '\n' && reading !=  '\r') {
+      mode = reading;
+      btSerial.print("Setting mode: ");
+      btSerial.println(mode); 
+    } else  { // ignore newline and carriage return signs
+      // btSerial.println("CR or NL");
+    }
+  }
+
+  switch (mode) {
+    case '1':
+      rainbowCycle(20);
+      break;
+    case '2':
+      colorWipe(0xff4500, 20);
+      break;
+    default:
+      colorWipe(0xffffff, 20);
+      break;
+  }
 }
 
 // Fill the dots one after the other with a color
 void colorWipe(uint32_t c, uint8_t wait) {
+  // dim  all pixels
+  for (uint16_t i=0; i < strip.numPixels(); i++) {
+    strip.setPixelColor(i, 0, 0, 0);
+  }
+  strip.show();
+
+  // sequentially show all pixels
   for(uint16_t i=0; i<strip.numPixels(); i++) {
     strip.setPixelColor(i, c);
     strip.show();
