@@ -53,6 +53,9 @@ void loop() {
   }
 
   switch (mode) {
+    case '0':
+      off();
+      break;
     case '1':
       rainbowCycle(20);
       break;
@@ -63,6 +66,14 @@ void loop() {
       colorWipe(0xffffff, 20);
       break;
   }
+}
+
+// turn all pixels off
+void off() {
+  for (uint16_t i=0; i < strip.numPixels(); i++) {
+    strip.setPixelColor(i, 0, 0, 0);
+  }
+  strip.show();
 }
 
 // Fill the dots one after the other with a color
