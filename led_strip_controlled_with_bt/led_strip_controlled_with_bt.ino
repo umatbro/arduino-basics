@@ -30,9 +30,10 @@ void setup() {
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
   btSerial.begin(9600);
+  Serial.begin(9600);
 }
 
-char mode = '1';
+String mode = "1";
 
 void loop() {
   // Some example procedures showing how to display to the pixels:
@@ -40,31 +41,21 @@ void loop() {
   // colorWipe(strip.Color(0, 255, 0), 50); // Green
   // colorWipe(strip.Color(0, 0, 255), 50); // Blue
 
-  // rainbow(20);
   if (btSerial.available() > 0) {
-    char reading = btSerial.read();
-    if (reading != '\n' && reading !=  '\r') {
-      mode = reading;
-      btSerial.print("Setting mode: ");
-      btSerial.println(mode); 
-    } else  { // ignore newline and carriage return signs
-      // btSerial.println("CR or NL");
-    }
+    String instruction = btSerial.readStringUntil('\r');
+    btSerial.print("Received message: " + instruction);
+
+    mode = instruction;
   }
 
-  switch (mode) {
-    case '0':
-      off();
-      break;
-    case '1':
-      rainbowCycle(20);
-      break;
-    case '2':
-      colorWipe(0xff4500, 20);
-      break;
-    default:
-      colorWipe(0xffffff, 20);
-      break;
+  if (mode == "0") {
+    off();
+  } else if (mode == "1") {
+    rainbowCycle(20);
+  } else if (mode == "2") {
+    colorWipe(0xff4500, 20);
+  } else {
+    colorWipe(0xffffff, 20);
   }
 }
 
