@@ -15,6 +15,7 @@ class UrStrip : public Adafruit_NeoPixel {
 
     void begin();
     // void (*play_mode)(int mode);
+    void test();
 };
 
 #endif

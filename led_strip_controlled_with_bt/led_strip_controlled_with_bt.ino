@@ -30,6 +30,7 @@ void setup() {
   Serial.begin(9600);
 
   strip.begin();
+  strip.test();
   strip.show(); // Initialize all pixels to 'off'
   btSerial.begin(9600);
 }
