@@ -1,4 +1,4 @@
-#include <Adafruit_NeoPixel.h>
+#include "ur_strip.h"
 #include <SoftwareSerial.h>
 #ifdef __AVR__
   #include <avr/power.h>
@@ -19,7 +19,7 @@ SoftwareSerial btSerial(BT_RX_PIN, BT_TX_PIN);
 //   NEO_GRB     Pixels are wired for GRB bitstream (most NeoPixel products)
 //   NEO_RGB     Pixels are wired for RGB bitstream (v1 FLORA pixels, not v2)
 //   NEO_RGBW    Pixels are wired for RGBW bitstream (NeoPixel RGBW products)
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRB + NEO_KHZ800);
+UrStrip strip = UrStrip(NUM_LEDS, PIN, NEO_GRB + NEO_KHZ800);
 
 // IMPORTANT: To reduce NeoPixel burnout risk, add 1000 uF capacitor across
 // pixel power leads, add 300 - 500 Ohm resistor on first pixel's data input
@@ -27,10 +27,11 @@ Adafruit_NeoPixel strip = Adafruit_NeoPixel(NUM_LEDS, PIN, NEO_GRB + NEO_KHZ800)
 // on a live circuit...if you must, connect GND first.
 
 void setup() {
+  Serial.begin(9600);
+
   strip.begin();
   strip.show(); // Initialize all pixels to 'off'
   btSerial.begin(9600);
-  Serial.begin(9600);
 }
 
 String mode = "1";
