@@ -30,7 +30,6 @@ void setup() {
   Serial.begin(9600);
 
   strip.begin();
-  strip.test();
   strip.show(); // Initialize all pixels to 'off'
   btSerial.begin(9600);
 }
@@ -38,10 +37,6 @@ void setup() {
 String mode = "1";
 
 void loop() {
-  // Some example procedures showing how to display to the pixels:
-  // colorWipe(strip.Color(255, 0, 0), 50); // Red
-  // colorWipe(strip.Color(0, 255, 0), 50); // Green
-  // colorWipe(strip.Color(0, 0, 255), 50); // Blue
 
   if (btSerial.available() > 0) {
     String instruction = btSerial.readStringUntil('\r');
@@ -51,76 +46,12 @@ void loop() {
   }
 
   if (mode == "0") {
-    off();
+    strip._mode_off();
   } else if (mode == "1") {
-    rainbowCycle(20);
+    strip._mode_rainbow_cycle(20);
   } else if (mode == "2") {
-    colorWipe(0xff4500, 20);
+    strip._mode_color_wipe(0xff4500, 20);
   } else {
-    colorWipe(0xffffff, 20);
+    strip._mode_color_wipe(0xffffff, 20);
   }
-}
-
-// turn all pixels off
-void off() {
-  for (uint16_t i=0; i < strip.numPixels(); i++) {
-    strip.setPixelColor(i, 0, 0, 0);
-  }
-  strip.show();
-}
-
-// Fill the dots one after the other with a color
-void colorWipe(uint32_t c, uint8_t wait) {
-  // dim  all pixels
-  for (uint16_t i=0; i < strip.numPixels(); i++) {
-    strip.setPixelColor(i, 0, 0, 0);
-  }
-  strip.show();
-
-  // sequentially show all pixels
-  for(uint16_t i=0; i<strip.numPixels(); i++) {
-    strip.setPixelColor(i, c);
-    strip.show();
-    delay(wait);
-  }
-}
-
-void rainbow(uint8_t wait) {
-  uint16_t i, j;
-
-  for(j=0; j<256; j++) {
-    for(i=0; i<strip.numPixels(); i++) {
-      strip.setPixelColor(i, Wheel((i+j) & 255));
-    }
-    strip.show();
-    delay(wait);
-  }
-}
-
-// Slightly different, this makes the rainbow equally distributed throughout
-void rainbowCycle(uint8_t wait) {
-  uint16_t i, j;
-
-  for(j=0; j<256; j++) { // cycles of all colors on wheel
-    for(i=0; i< strip.numPixels(); i++) {
-      strip.setPixelColor(i, Wheel(((i * 256 / strip.numPixels()) + j) & 255));
-    }
-    strip.show();
-    delay(wait);
-  }
-}
-
-// Input a value 0 to 255 to get a color value.
-// The colours are a transition r - g - b - back to r.
-uint32_t Wheel(byte WheelPos) {
-  WheelPos = 255 - WheelPos;
-  if(WheelPos < 85) {
-    return strip.Color(255 - WheelPos * 3, 0, WheelPos * 3);
-  }
-  if(WheelPos < 170) {
-    WheelPos -= 85;
-    return strip.Color(0, WheelPos * 3, 255 - WheelPos * 3);
-  }
-  WheelPos -= 170;
-  return strip.Color(WheelPos * 3, 255 - WheelPos * 3, 0);
 }

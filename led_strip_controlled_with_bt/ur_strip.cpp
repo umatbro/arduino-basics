@@ -8,39 +8,95 @@ void UrStrip::begin() {
   Serial.print(this -> numPixels());
   Serial.println(" pixels");
 
-  this -> mode = MODE_OFF;
-}
-
-
-int add(int a, int b) {
-  return a + b;
-}
-
-int sub(int a, int b) {
-  return a - b;
+  // set initial mode
 }
 
 /**
-* Function to test function pointers
-* reference: http://www.learncpp.com/cpp-tutorial/78-function-pointers/
+* Decide which function should be executed based on given command.
+*
+* Return pointer to a function to be exectued or NULL if command was not recognized.
 */
-void UrStrip::test() {
-  // create function pointer
-  int (*fncPtr)(int, int);
+strip_action_function UrStrip::parse_command(const String& command) {
+  // TODO
+  // set brightness
+  // if (command.substring(0, 1) == "b") {
+  //   return NULL;
+  // }
+  // if (command == UrStripMode::MODE_OFF) {
+  //   return this -> _mode_off;
+  // }
+  // if (command == UrStripMode::MODE_RAINBOW_CYCLE) {
+  //   return this -> _mode_rainbow_cycle;
+  // }
+  // if (command == UrStripMode::MODE_WIPE) {
+  //   return this -> _mode_color_wipe;
+  // }
 
-  // assign function pointer to add function
-  fncPtr = add;
+  // nothing matches - return NULL
+  return NULL;
+}
 
-  // func = add;
-  int a = 1;
-  int b = 2;
 
-  // call function pointer (pointer is pointing to add function)
-  int result = (*fncPtr)(a, b);
+/**
+* Input a value 0 to 255 to get a color value.
+* The colours are a transition r-g-b back to r
+*/
+uint32_t UrStrip::wheel(byte wheel_pos) {
+  wheel_pos = 255 - wheel_pos;
+  if(wheel_pos < 85) {
+    return UrStrip::Color(255 - wheel_pos * 3, 0, wheel_pos * 3);
+  }
+  if(wheel_pos < 170) {
+    wheel_pos -= 85;
+    return UrStrip::Color(0, wheel_pos * 3, 255 - wheel_pos * 3);
+  }
+  wheel_pos -= 170;
+  return UrStrip::Color(wheel_pos * 3, 255 - wheel_pos * 3, 0);
+}
 
-  Serial.println(int(fncPtr));
-  Serial.println((*fncPtr)(a, b));
+// mode functions
+void UrStrip::_mode_off() {
+  for (uint16_t i = 0; i < this -> numPixels(); i++) {
+    this -> setPixelColor(i, 0, 0, 0);
+  }
 
-  fncPtr = sub;
-  Serial.println((*fncPtr)(a, b));
+  this -> show();
+}
+
+
+void UrStrip::_mode_rainbow_cycle(uint8_t wait) {
+  for (uint16_t j = 0; j < 256; j++) { // cycles of all colors on wheel
+    for (uint16_t i = 0; i < this -> numPixels(); i++) {
+      this -> setPixelColor(i, UrStrip::wheel(((i * 256 / this -> numPixels()) + j) & 255));
+    }
+    this -> show();
+    delay(wait);
+  }
+}
+
+
+void UrStrip::_mode_rainbow(uint8_t wait) {
+  for (uint16_t j = 0; j < 256; j++) {
+    for (uint16_t i = 0; i < this -> numPixels(); i++) {
+      this -> setPixelColor(i, UrStrip::wheel((i+j) & 255));
+    }
+    this -> show();
+    delay(wait);
+  }
+}
+
+
+void UrStrip::_mode_color_wipe(uint32_t color, uint8_t wait) {
+  // dim  all pixels
+  for (uint16_t i = 0; i < this -> numPixels(); i++) {
+    this -> setPixelColor(i, 0, 0, 0);
+  }
+  this -> show();
+
+  // sequentially show all pixels
+  for (uint16_t i = 0; i < this -> numPixels(); i++) {
+    this -> setPixelColor(i, color);
+    this -> show();
+    delay(wait);
+  }
 }
