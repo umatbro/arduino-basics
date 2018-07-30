@@ -46,7 +46,4 @@ void loop() {
 
   // TODO this is breaking things
   // strip.play_mode();
-  if (strip._mode == "2") {
-    strip._mode_rainbow_cycle(strip._wait);
-  }
 }

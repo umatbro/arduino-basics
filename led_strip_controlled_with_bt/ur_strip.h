@@ -15,11 +15,6 @@ namespace UrStripColor {
   const uint32_t COLOR_WHITE = Adafruit_NeoPixel::Color(255, 255, 255);
 }
 
- // pointer for storing strip action functions
- // those functions will be called with "wait" parameter (telling about animation speed)
-typedef void (*strip_action_function)(uint8_t);
-
-
 class UrStrip : public Adafruit_NeoPixel {
   public:
     // inhehrit constructor
@@ -32,12 +27,10 @@ class UrStrip : public Adafruit_NeoPixel {
     // functions
     void begin();
 
-    // TODO this is not correct
     void parse_command(String);
-    // void (*play_mode)(int mode);
     void play_mode();
 
-  // private:
+  private:
     uint32_t _color;
     uint8_t _wait;
     String _mode;
