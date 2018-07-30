@@ -34,24 +34,19 @@ void setup() {
   btSerial.begin(9600);
 }
 
-String mode = "1";
-
-void loop() {
-
+void loop() { 
+  delay(200);
   if (btSerial.available() > 0) {
+    delay(200);
     String instruction = btSerial.readStringUntil('\r');
     btSerial.print("Received message: " + instruction);
 
-    mode = instruction;
+    strip.parse_command(instruction);
   }
 
-  if (mode == "0") {
-    strip._mode_off();
-  } else if (mode == "1") {
-    strip._mode_rainbow_cycle(20);
-  } else if (mode == "2") {
-    strip._mode_color_wipe(0xff4500, 20);
-  } else {
-    strip._mode_color_wipe(0xffffff, 20);
+  // TODO this is breaking things
+  // strip.play_mode();
+  if (strip._mode == "2") {
+    strip._mode_rainbow_cycle(strip._wait);
   }
 }

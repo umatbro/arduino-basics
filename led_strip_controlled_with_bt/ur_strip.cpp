@@ -1,5 +1,14 @@
 #include "ur_strip.h"
 
+using namespace UrStripColor;
+using namespace UrStripMode;
+
+UrStrip::UrStrip(uint16_t n, uint8_t port, neoPixelType t) : Adafruit_NeoPixel(n, port, t) {
+  this -> _color = COLOR_WHITE;
+  this -> _wait = 20;
+  this -> _mode = MODE_OFF;
+}
+
 
 void UrStrip::begin() {
   Adafruit_NeoPixel::begin();
@@ -12,29 +21,25 @@ void UrStrip::begin() {
 }
 
 /**
-* Decide which function should be executed based on given command.
-*
-* Return pointer to a function to be exectued or NULL if command was not recognized.
+* Decide which function should be done based on given command.
 */
-strip_action_function UrStrip::parse_command(const String& command) {
-  // TODO
-  // set brightness
-  // if (command.substring(0, 1) == "b") {
-  //   return NULL;
-  // }
-  // if (command == UrStripMode::MODE_OFF) {
-  //   return this -> _mode_off;
-  // }
-  // if (command == UrStripMode::MODE_RAINBOW_CYCLE) {
-  //   return this -> _mode_rainbow_cycle;
-  // }
-  // if (command == UrStripMode::MODE_WIPE) {
-  //   return this -> _mode_color_wipe;
-  // }
+void UrStrip::parse_command(String command) {
+  using Utils::is_integer;
 
-  // nothing matches - return NULL
-  return NULL;
+  if (command.substring(0, 1) == "b") { // changing brightness
+    Serial.println("UrStrip::parse_command: You are changing brightness");
+    // call setBrightness here
+  }
+  else if (is_integer(command)) {
+    this -> _mode = command;
+    Serial.print("Set mode ");
+    Serial.println(this -> _mode);
+  } else {
+    Serial.print("Error parsing command: ");
+    Serial.println(command);
+  }
 }
+
 
 
 /**
@@ -53,6 +58,16 @@ uint32_t UrStrip::wheel(byte wheel_pos) {
   wheel_pos -= 170;
   return UrStrip::Color(wheel_pos * 3, 255 - wheel_pos * 3, 0);
 }
+
+
+void UrStrip::play_mode() {
+  using namespace UrStripMode;
+  if (this -> _mode == MODE_OFF) this -> _mode_off();
+  if (this -> _mode == MODE_RAINBOW_CYCLE) this -> _mode_rainbow_cycle(this -> _wait);
+  if (this -> _mode == MODE_WIPE) this -> _mode_color_wipe(this -> _color, this -> _wait);
+  this -> _mode_off();
+}
+
 
 // mode functions
 void UrStrip::_mode_off() {
@@ -87,6 +102,7 @@ void UrStrip::_mode_rainbow(uint8_t wait) {
 
 
 void UrStrip::_mode_color_wipe(uint32_t color, uint8_t wait) {
+
   // dim  all pixels
   for (uint16_t i = 0; i < this -> numPixels(); i++) {
     this -> setPixelColor(i, 0, 0, 0);
