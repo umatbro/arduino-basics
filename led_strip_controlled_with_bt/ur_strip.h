@@ -5,10 +5,10 @@
 #include "utils.h"
 
 namespace UrStripMode {
-  const String MODE_OFF = String("0");
-  const String MODE_ON_WHITE = String("1");
-  const String MODE_RAINBOW_CYCLE = String("2");
-  const String MODE_WIPE = String("3");
+  const String MODE_OFF = "0";
+  const String MODE_STEADY_ON = "1";
+  const String MODE_RAINBOW_CYCLE = "2";
+  const String MODE_WIPE = "3";
 }
 
 namespace UrStripColor {
@@ -36,6 +36,7 @@ class UrStrip : public Adafruit_NeoPixel {
     String _mode;
 
     void _mode_off();
+    void _mode_steady_on(uint32_t color);
     void _mode_rainbow_cycle(uint8_t wait);
     void _mode_rainbow(uint8_t wait);
     void _mode_color_wipe(uint32_t color, uint8_t wait);

@@ -7,6 +7,7 @@ UrStrip::UrStrip(uint16_t n, uint8_t port, neoPixelType t) : Adafruit_NeoPixel(n
   this -> _color = COLOR_WHITE;
   this -> _wait = 20;
   this -> _mode = MODE_OFF;
+  this -> setBrightness(255);
 }
 
 
@@ -61,6 +62,7 @@ uint32_t UrStrip::wheel(byte wheel_pos) {
 void UrStrip::play_mode() {
   using namespace UrStripMode;
   if (this -> _mode == MODE_OFF) this -> _mode_off();
+  else if (this -> _mode == MODE_STEADY_ON) this -> _mode_steady_on(this -> _color);
   else if (this -> _mode == MODE_RAINBOW_CYCLE) this -> _mode_rainbow_cycle(this -> _wait);
   else if (this -> _mode == MODE_WIPE) this -> _mode_color_wipe(this -> _color, this -> _wait);
   else this -> _mode_off();
@@ -71,6 +73,14 @@ void UrStrip::play_mode() {
 void UrStrip::_mode_off() {
   for (uint16_t i = 0; i < this -> numPixels(); i++) {
     this -> setPixelColor(i, 0, 0, 0);
+  }
+
+  this -> show();
+}
+
+void UrStrip::_mode_steady_on(uint32_t color) {
+  for (uint16_t i = 0; i < this -> numPixels(); i++ ) {
+    this -> setPixelColor(i, UrStrip::Color(255, 255, 255));
   }
 
   this -> show();

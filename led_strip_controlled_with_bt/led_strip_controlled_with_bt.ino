@@ -44,6 +44,5 @@ void loop() {
     strip.parse_command(instruction);
   }
 
-  // TODO this is breaking things
   strip.play_mode();
 }
