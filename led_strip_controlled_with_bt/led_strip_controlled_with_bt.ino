@@ -45,5 +45,5 @@ void loop() {
   }
 
   // TODO this is breaking things
-  // strip.play_mode();
+  strip.play_mode();
 }

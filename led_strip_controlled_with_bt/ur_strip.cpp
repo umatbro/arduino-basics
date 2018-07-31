@@ -12,7 +12,6 @@ UrStrip::UrStrip(uint16_t n, uint8_t port, neoPixelType t) : Adafruit_NeoPixel(n
 
 void UrStrip::begin() {
   Adafruit_NeoPixel::begin();
-  Serial.begin(9600);
   Serial.print("begin BtSrip with ");
   Serial.print(this -> numPixels());
   Serial.println(" pixels");
@@ -62,9 +61,9 @@ uint32_t UrStrip::wheel(byte wheel_pos) {
 void UrStrip::play_mode() {
   using namespace UrStripMode;
   if (this -> _mode == MODE_OFF) this -> _mode_off();
-  if (this -> _mode == MODE_RAINBOW_CYCLE) this -> _mode_rainbow_cycle(this -> _wait);
-  if (this -> _mode == MODE_WIPE) this -> _mode_color_wipe(this -> _color, this -> _wait);
-  this -> _mode_off();
+  else if (this -> _mode == MODE_RAINBOW_CYCLE) this -> _mode_rainbow_cycle(this -> _wait);
+  else if (this -> _mode == MODE_WIPE) this -> _mode_color_wipe(this -> _color, this -> _wait);
+  else this -> _mode_off();
 }
 
 
